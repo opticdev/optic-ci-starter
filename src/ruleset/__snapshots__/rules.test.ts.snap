@@ -1,0 +1,205 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`operation ids fails if empty string 1`] = `
+Object {
+  "base": Object {
+    "info": Object {
+      "title": "Empty",
+      "version": "0.0.0",
+    },
+    "openapi": "3.0.1",
+    "paths": Object {
+      "/example": Object {
+        "get": Object {
+          "responses": Object {},
+        },
+        "operationId": "before",
+      },
+    },
+  },
+  "changelog": Array [
+    Object {
+      "changeType": "changed",
+      "changed": Object {
+        "after": Object {
+          "method": "get",
+          "operationId": "changed-from-before",
+          "pathPattern": "/example",
+        },
+        "before": Object {
+          "method": "get",
+          "pathPattern": "/example",
+        },
+      },
+      "location": Object {
+        "conceptualLocation": Object {
+          "method": "get",
+          "path": "/example",
+        },
+        "conceptualPath": Array [
+          "operations",
+          "/example",
+          "get",
+        ],
+        "jsonPath": "/paths/~1example/get",
+        "kind": "operation",
+      },
+    },
+  ],
+  "next": Object {
+    "info": Object {
+      "title": "Empty",
+      "version": "0.0.0",
+    },
+    "openapi": "3.0.1",
+    "paths": Object {
+      "/example": Object {
+        "get": Object {
+          "operationId": "changed-from-before",
+          "responses": Object {},
+        },
+        "operationId": "before",
+      },
+    },
+  },
+  "results": Array [
+    Object {
+      "change": Object {
+        "changeType": "changed",
+        "changed": Object {
+          "after": Object {
+            "method": "get",
+            "operationId": "changed-from-before",
+            "pathPattern": "/example",
+          },
+          "before": Object {
+            "method": "get",
+            "pathPattern": "/example",
+          },
+        },
+        "location": Object {
+          "conceptualLocation": Object {
+            "method": "get",
+            "path": "/example",
+          },
+          "conceptualPath": Array [
+            "operations",
+            "/example",
+            "get",
+          ],
+          "jsonPath": "/paths/~1example/get",
+          "kind": "operation",
+        },
+      },
+      "condition": "have consistent operation IDs",
+      "docsLink": undefined,
+      "error": "expected undefined to equal 'changed-from-before'",
+      "isMust": true,
+      "isShould": false,
+      "passed": false,
+      "where": "updated operation: GET /example",
+    },
+  ],
+}
+`;
+
+exports[`operation ids passes if no operation id in from spec 1`] = `
+Object {
+  "base": Object {
+    "info": Object {
+      "title": "Empty",
+      "version": "0.0.0",
+    },
+    "openapi": "3.0.1",
+    "paths": Object {
+      "/example": Object {
+        "get": Object {
+          "responses": Object {},
+        },
+      },
+    },
+  },
+  "changelog": Array [
+    Object {
+      "changeType": "changed",
+      "changed": Object {
+        "after": Object {
+          "method": "get",
+          "operationId": "changed-from-empty",
+          "pathPattern": "/example",
+        },
+        "before": Object {
+          "method": "get",
+          "pathPattern": "/example",
+        },
+      },
+      "location": Object {
+        "conceptualLocation": Object {
+          "method": "get",
+          "path": "/example",
+        },
+        "conceptualPath": Array [
+          "operations",
+          "/example",
+          "get",
+        ],
+        "jsonPath": "/paths/~1example/get",
+        "kind": "operation",
+      },
+    },
+  ],
+  "next": Object {
+    "info": Object {
+      "title": "Empty",
+      "version": "0.0.0",
+    },
+    "openapi": "3.0.1",
+    "paths": Object {
+      "/example": Object {
+        "get": Object {
+          "operationId": "changed-from-empty",
+          "responses": Object {},
+        },
+      },
+    },
+  },
+  "results": Array [
+    Object {
+      "change": Object {
+        "changeType": "changed",
+        "changed": Object {
+          "after": Object {
+            "method": "get",
+            "operationId": "changed-from-empty",
+            "pathPattern": "/example",
+          },
+          "before": Object {
+            "method": "get",
+            "pathPattern": "/example",
+          },
+        },
+        "location": Object {
+          "conceptualLocation": Object {
+            "method": "get",
+            "path": "/example",
+          },
+          "conceptualPath": Array [
+            "operations",
+            "/example",
+            "get",
+          ],
+          "jsonPath": "/paths/~1example/get",
+          "kind": "operation",
+        },
+      },
+      "condition": "have consistent operation IDs",
+      "docsLink": undefined,
+      "error": "expected undefined to equal 'changed-from-empty'",
+      "isMust": true,
+      "isShould": false,
+      "passed": false,
+      "where": "updated operation: GET /example",
+    },
+  ],
+}
+`;
