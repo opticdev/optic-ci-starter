@@ -1,0 +1,29 @@
+name: Optic CI Template
+description: | 
+  A template for running Optic CI rules against your OpenAPI files.
+  Fork this repository, and [add your own rules](link).
+  For more information check out the [Readme](link).
+
+inputs:
+  from:
+    description: The YAML file before changes were made.
+    required: true
+  to:
+    description: The YAML file with all changes to evaluate.
+    required: true
+  ruleset:
+    description: The ruleset to apply to OpenAPI changes.
+    required: false
+    default: default
+
+runs:
+  using: composite
+  steps:
+    - run: yarn install
+      shell: bash
+    - run: >-
+        yarn cli compare 
+        --from ${{ inputs.from }}
+        --to  ${{ inputs.to }}
+        --ruleset ${{ inputs.ruleset }}
+      shell: bash
