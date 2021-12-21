@@ -21,8 +21,15 @@ runs:
   steps:
     - run: yarn install
       shell: bash
+      working-directory: ${{ github.action_path }}
+    - run: yarn build
+      shell: bash
+      working-directory: ${{ github.action_path }}
+    - run: chmod a+x build/index.js
+      shell: bash
+      working-directory: ${{ github.action_path }}
     - run: >-
-        yarn cli compare 
+        $GITHUB_ACTION_PATH/build/index.js compare 
         --from ${{ inputs.from }}
         --to  ${{ inputs.to }}
         --ruleset ${{ inputs.ruleset }}
