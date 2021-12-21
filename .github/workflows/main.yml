@@ -1,0 +1,17 @@
+name: Optic CI example workflow definition
+
+on: [ push, pull_request, workflow_dispatch ]
+
+jobs:
+  optic-ci:
+    name: Runs Optic CI against two OpenAPI files with a ruleset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Optic cli
+        uses: ./
+        with:
+          from: test-data/petstore/before.yaml
+          to: test-data/petstore/after.yaml
+          ruleset: default
