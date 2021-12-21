@@ -5,11 +5,8 @@ description: |
   For more information check out the [Readme](link).
 
 inputs:
-  from:
-    description: The YAML file before changes were made.
-    required: true
-  to:
-    description: The YAML file with all changes to evaluate.
+  file:
+    description: The OpenAPI file to evalute in this PR.
     required: true
   ruleset:
     description: The ruleset to apply to OpenAPI changes.
@@ -30,7 +27,7 @@ runs:
       working-directory: ${{ github.action_path }}
     - run: >-
         $GITHUB_ACTION_PATH/build/index.js compare 
-        --from ${{ inputs.from }}
-        --to  ${{ inputs.to }}
+        --from  ${{ github.head_ref }}:${{ inputs.file }}
+        --to  ${{ github.ref }}:${{ inputs.file }}
         --ruleset ${{ inputs.ruleset }}
       shell: bash
