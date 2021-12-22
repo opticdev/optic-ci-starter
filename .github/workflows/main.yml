@@ -1,17 +1,13 @@
-name: Optic CI example workflow definition
+name: Optic CI build check
 
-on: [ push, pull_request, workflow_dispatch ]
+on: [ push, workflow_dispatch ]
 
 jobs:
   optic-ci:
-    name: Runs Optic CI against two OpenAPI files with a ruleset
+    name: Build Optic-ci template
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run Optic cli
-        uses: ./
-        with:
-          from: test-data/petstore/before.yaml
-          to: test-data/petstore/after.yaml
-          ruleset: default
+        run: yarn install && yarn build
