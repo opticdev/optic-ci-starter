@@ -30,4 +30,5 @@ runs:
         --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
         --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
         --ruleset ${{ inputs.ruleset }}
+        --github-annotations
       shell: bash
