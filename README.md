@@ -1,22 +1,24 @@
-# optic-ci-starter
-
-dream integration for postman oss team....
-
-this repo is a GitHub Action and a Tempalte Repo
-
-In the readme there's a big FORK ME button
-
-They fork and give it a new name theircompany/rule-repo
-
-That name is now a GitHub Action (woot!)
+1. [Click here to fork me and make your own rules ](https://github.com/opticdev/optic-ci-starter/fork)
+2. Read docs https://www.useoptic.com/docs/optic-ci/usage
+3. Run rules by adding an action pointing to your fork
 
 ```
-- name: Runs optic ci rules
-        uses: theircompany/rule-repo@main
+name: Optic CI example workflow definition
+
+on: [ pull_request ]
+
+jobs:
+  optic-ci:
+    name: Optic API Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          from: $BASE:openapi.yaml
-          to: $HEAD:openapi.yaml
-          ruleset: "default"
+          fetch-depth: 0
+      - name: Run Optic CI
+        uses: yourOrg/optic-ci-rules-fork@main
+        with:
+          file: openapi.yaml
+          ruleset: default
 ```
-
-It's magic! When they push to main the rules that run in CI change. If they want to pin them somewhere use GitHub releases 
