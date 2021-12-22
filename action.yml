@@ -1,8 +1,8 @@
 name: Optic CI Template
 description: | 
   A template for running Optic CI rules against your OpenAPI files.
-  Fork this repository, and [add your own rules](link).
-  For more information check out the [Readme](link).
+  Fork this repository, and add your rules under src/ruleset.
+  For more information join the beta at https://www.useoptic.com/
 
 inputs:
   file:
@@ -16,18 +16,18 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: yarn install
-      shell: bash
-      working-directory: ${{ github.action_path }}
-    - run: yarn build
-      shell: bash
-      working-directory: ${{ github.action_path }}
-    - run: chmod a+x build/index.js
+    - name: Setup
+      run: |
+        echo "::group::Setup"
+        yarn install
+        yarn build
+        chmod a+x build/index.js
+        echo "::endgroup::"
       shell: bash
       working-directory: ${{ github.action_path }}
     - run: >-
         $GITHUB_ACTION_PATH/build/index.js compare 
-        --from  ${{ github.head_ref }}:${{ inputs.file }}
-        --to  ${{ github.ref }}:${{ inputs.file }}
+        --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
+        --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
         --ruleset ${{ inputs.ruleset }}
       shell: bash
