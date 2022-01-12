@@ -8,10 +8,6 @@ inputs:
   file:
     description: The OpenAPI file to evalute in this PR.
     required: true
-  ruleset:
-    description: The ruleset to apply to OpenAPI changes.
-    required: false
-    default: default
 
 runs:
   using: composite
@@ -28,6 +24,5 @@ runs:
         node $GITHUB_ACTION_PATH/build/index.js compare 
         --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
         --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
-        --ruleset ${{ inputs.ruleset }}
         --github-annotations
       shell: bash
