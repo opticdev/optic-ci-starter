@@ -1,5 +1,5 @@
 name: Optic CI Template
-description: | 
+description: |
   A template for running Optic CI rules against your OpenAPI files.
   Fork this repository, and add your rules under src/ruleset.
   For more information join the beta at https://www.useoptic.com/
@@ -12,6 +12,9 @@ inputs:
     description: The ruleset to apply to OpenAPI changes.
     required: false
     default: default
+  optic-token:
+    description: The optic token to upload your changelog
+    required: true
 
 runs:
   using: composite
@@ -25,11 +28,35 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
     - run: >-
-        node $GITHUB_ACTION_PATH/build/index.js compare 
+        node $GITHUB_ACTION_PATH/build/index.js compare
         --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
         --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
         --ruleset ${{ inputs.ruleset }}
-        --github-annotations
+        --create-file
+      env:
+        FORCE_COLOR: 2
+      shell: bash
+    - run: >-
+        echo $GITHUB_CONTEXT > ./ci-context.json
+      env:
+        FORCE_COLOR: 2
+      shell: bash
+    - run: >-
+        OPTIC_TOKEN=${{ inputs.token }} node $GITHUB_ACTION_PATH/build/index.js upload
+          --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
+          --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
+          --provider github
+          --ci-context ./ci-context.json
+          --compare ./compare-output.json
+      env:
+        FORCE_COLOR: 2
+      shell: bash
+    - run: >-
+        OPTIC_TOKEN=${{ inputs.token }} node $GITHUB_ACTION_PATH/build/index.js github-comment
+          --provider github
+          --ci-context ./ci-context.json
+          --upload ./upload-output.json
+          --token ${{ secrets.GITHUB_TOKEN }}
       env:
         FORCE_COLOR: 2
       shell: bash
