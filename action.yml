@@ -12,8 +12,11 @@ inputs:
     description: The ruleset to apply to OpenAPI changes.
     required: false
     default: default
-  optic-token:
+  optic_token:
     description: The optic token to upload your changelog
+    required: true
+  github_token:
+    description: Token for commenting on your PR
     required: true
 
 runs:
@@ -42,7 +45,7 @@ runs:
         FORCE_COLOR: 2
       shell: bash
     - run: >-
-        OPTIC_TOKEN=${{ inputs.token }} node $GITHUB_ACTION_PATH/build/index.js upload
+        OPTIC_TOKEN=${{ inputs.optic_token }} node $GITHUB_ACTION_PATH/build/index.js upload
           --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
           --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
           --provider github
@@ -52,11 +55,11 @@ runs:
         FORCE_COLOR: 2
       shell: bash
     - run: >-
-        OPTIC_TOKEN=${{ inputs.token }} node $GITHUB_ACTION_PATH/build/index.js github-comment
+        OPTIC_TOKEN=${{ inputs.github_token }} node $GITHUB_ACTION_PATH/build/index.js github-comment
           --provider github
           --ci-context ./ci-context.json
           --upload ./upload-output.json
-          --token ${{ secrets.GITHUB_TOKEN }}
+          --token ${{ inputs.GITHUB_TOKEN }}
       env:
         FORCE_COLOR: 2
       shell: bash
