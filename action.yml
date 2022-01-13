@@ -25,4 +25,6 @@ runs:
         --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
         --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
         --github-annotations
+      env:
+        FORCE_COLOR: 2
       shell: bash
