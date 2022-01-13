@@ -28,6 +28,7 @@ jobs:
         uses: opticdev/optic-ci-starter@main
         with:
           file: openapi.yaml
+          ruleset: default
 ```
 
 
@@ -55,4 +56,5 @@ jobs:
         uses: yourOrg/optic-ci-rules-fork@main
         with:
           file: openapi.yaml
+          ruleset: default
 ```
