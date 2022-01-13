@@ -1,9 +1,14 @@
-import {makeCiCliWithNamedRules, rulesets} from "@useoptic/api-checks";
-import {customRuleset} from "./ruleset";
-const packageJson = require('../package.json')
+import {makeCiCliWithNamedRules, StandardApiChecks, makeApiChecksForStandards } from "@useoptic/api-checks";
+const packageJson = require('../package.json');
+const config: StandardApiChecks = {
+  naming: {},
+  breakingChanges: {
+    failOn: 'all'
+  }
+}
 
 const cli = makeCiCliWithNamedRules(packageJson.name, {
-  default: customRuleset()
+  default: makeApiChecksForStandards(config)
 });
 
 cli.parse(process.argv);
