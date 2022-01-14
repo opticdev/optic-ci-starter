@@ -42,4 +42,6 @@ runs:
         --upload-results
       env:
         FORCE_COLOR: 2
+        OPTIC_TOKEN: ${{ inputs.optic_token }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
       shell: bash
