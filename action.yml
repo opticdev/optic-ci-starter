@@ -30,36 +30,16 @@ runs:
         echo "::endgroup::"
       shell: bash
       working-directory: ${{ github.action_path }}
-    - run: >-
+    - name: Establish GitHub Context
+      run: echo $GITHUB_CONTEXT > ./ci-context.json
+      shell: bash
+    - name: Validate OpenAPI changes
+      run: >-
         node $GITHUB_ACTION_PATH/build/index.js compare
         --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
         --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
         --ruleset ${{ inputs.ruleset }}
-        --create-file
-      env:
-        FORCE_COLOR: 2
-      shell: bash
-    - run: >-
-        echo $GITHUB_CONTEXT > ./ci-context.json
-      env:
-        FORCE_COLOR: 2
-      shell: bash
-    - run: >-
-        OPTIC_TOKEN=${{ inputs.optic_token }} node $GITHUB_ACTION_PATH/build/index.js upload
-          --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
-          --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
-          --provider github
-          --ci-context ./ci-context.json
-          --compare ./compare-output.json
-      env:
-        FORCE_COLOR: 2
-      shell: bash
-    - run: >-
-        OPTIC_TOKEN=${{ inputs.github_token }} node $GITHUB_ACTION_PATH/build/index.js github-comment
-          --provider github
-          --ci-context ./ci-context.json
-          --upload ./upload-output.json
-          --token ${{ inputs.GITHUB_TOKEN }}
+        --upload-results
       env:
         FORCE_COLOR: 2
       shell: bash
