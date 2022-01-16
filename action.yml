@@ -39,6 +39,7 @@ runs:
         --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
         --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
         --ruleset ${{ inputs.ruleset }}
+        --ci-context
         --upload-results
       env:
         FORCE_COLOR: 2
