@@ -1,4 +1,5 @@
 import {makeCiCliWithNamedRules, StandardApiChecks, makeApiChecksForStandards } from "@useoptic/api-checks";
+import {customRuleset} from "./ruleset";
 const packageJson = require('../package.json');
 const config: StandardApiChecks = {
   naming: {},
@@ -7,8 +8,12 @@ const config: StandardApiChecks = {
   }
 }
 
+const rulesService = makeApiChecksForStandards(config)
+
+rulesService.mergeWith(customRuleset())
+
 const cli = makeCiCliWithNamedRules(packageJson.name, {
-  default: makeApiChecksForStandards(config)
+  default:  rulesService
 }, {
   opticToken: process.env.OPTIC_TOKEN || '123',
   gitProvider: {
