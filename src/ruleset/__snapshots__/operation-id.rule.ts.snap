@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`failing case 1: changing operation id 1`] = `
+Object {
+  "passed": false,
+  "results": Array [
+    Object {
+      "change": Object {
+        "changeType": "changed",
+        "changed": Object {
+          "after": Object {
+            "method": "get",
+            "operationId": "456",
+            "pathPattern": "/example",
+          },
+          "before": Object {
+            "method": "get",
+            "operationId": "123",
+            "pathPattern": "/example",
+          },
+        },
+        "location": Object {
+          "conceptualLocation": Object {
+            "method": "get",
+            "path": "/example",
+          },
+          "conceptualPath": Array [
+            "operations",
+            "/example",
+            "get",
+          ],
+          "jsonPath": "/paths/~1example/get",
+          "kind": "operation",
+        },
+      },
+      "condition": "not change operation ids -- breaking",
+      "docsLink": undefined,
+      "effectiveOnDate": undefined,
+      "error": "expected operation id to be the same",
+      "isMust": true,
+      "isShould": false,
+      "passed": false,
+      "where": "updated operation: GET /example",
+    },
+  ],
+}
+`;
