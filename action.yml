@@ -30,8 +30,20 @@ runs:
         echo "::endgroup::"
       shell: bash
       working-directory: ${{ github.action_path }}
-    - name: Establish GitHub Context
-      run: echo $GITHUB_CONTEXT > ./ci-context.json
+    - name: Create tmp dir
+      id: tmp
+      run: |
+        mkdir ${GITHUB_WORKSPACE}/tmp
+        echo "::set-output name=dir::${GITHUB_WORKSPACE}/tmp"
+      shell: bash
+    - name: Prepare context file
+      id: context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: |
+        context_file=${{ steps.tmp.outputs.dir}}/ci-context.json
+        echo "$GITHUB_CONTEXT" > "$context_file"
+        echo "::set-output name=path::$context_file"
       shell: bash
     - name: Validate OpenAPI changes
       run: >-
@@ -39,10 +51,12 @@ runs:
         --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
         --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
         --ruleset ${{ inputs.ruleset }}
-        --ci-context ./ci-context.json
+        --context {}
         --upload-results
+        --ci-context ${{ steps.context.outputs.path }}
       env:
         FORCE_COLOR: 2
         OPTIC_TOKEN: ${{ inputs.optic_token }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
+        OPTIC_ENV: staging
       shell: bash
