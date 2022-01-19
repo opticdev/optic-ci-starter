@@ -18,6 +18,10 @@ inputs:
   github_token:
     description: Token for commenting on your PR
     required: true
+  optic_environment:
+    description: Used for testing. Should not be manually set under normal conditions.
+    required: false
+    default: production
 
 runs:
   using: composite
@@ -58,5 +62,5 @@ runs:
         FORCE_COLOR: 2
         OPTIC_TOKEN: ${{ inputs.optic_token }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
-        OPTIC_ENV: staging
+        OPTIC_ENV: ${{ inputs.optic_environment }}
       shell: bash
