@@ -8,6 +8,9 @@ inputs:
   file:
     description: The OpenAPI file to evalute in this PR.
     required: true
+  optic_token:
+    description: The Optic Token. Note, GitHub Secrets must be explicitly passed to composite actions
+    required: false
   ruleset:
     description: The ruleset to apply to OpenAPI changes.
     required: false
@@ -16,20 +19,25 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup
-      run: |
-        echo "::group::Setup"
-        yarn install
-        yarn build
-        echo "::endgroup::"
-      shell: bash
-      working-directory: ${{ github.action_path }}
-    - run: >-
-        node $GITHUB_ACTION_PATH/build/index.js compare 
-        --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
-        --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
-        --ruleset ${{ inputs.ruleset }}
-        --github-annotations
-      env:
-        FORCE_COLOR: 2
-      shell: bash
+      - name: Setup optic-ci
+        run: |
+          echo "::group::Setup"
+          npm install --global @useoptic/optic-ci
+          echo "::endgroup::"
+        shell: bash
+      - name: Generate GitHub Context
+        run: echo "$GITHUB_CONTEXT" > ./ci-context.json
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        shell: bash
+      - run: >-
+          optic-ci compare
+          --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
+          --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
+          --upload-results
+        env:
+          FORCE_COLOR: "2"
+          OPTIC_TOKEN: ${{ secrets.OPTIC_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPTIC_ENV: staging
+        shell: bash

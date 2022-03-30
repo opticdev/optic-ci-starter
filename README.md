@@ -58,3 +58,17 @@ jobs:
           file: openapi.yaml
           ruleset: default
 ```
+
+## Check your rules locally
+
+Clone your custom rules fork to your working environment, and install the `optic-ci` tool:
+
+``` sh
+npm install --global @useoptic/optic-ci
+```
+
+Then you can run `optic-ci` in the root of your project, which will pick up the optic.config.js file and your custom rules. You'll need to point it at a set of changes to see it in action:
+
+``` sh
+optic-ci compare --from test-data/petstore/before.yaml --to test-data/petstore/after.yaml
+```
