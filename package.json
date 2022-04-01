@@ -30,7 +30,8 @@
     "@useoptic/rulesets-base": "^0.24.4"
   },
   "dependencies": {
-    "@useoptic/api-checks": "^0.24.4"
+    "@useoptic/optic-ci": "^0.24.7", 
+    "@useoptic/api-checks": "^0.24.7"
   },
   "jest": {
     "testPathIgnorePatterns": [

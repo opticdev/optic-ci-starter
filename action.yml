@@ -11,8 +11,12 @@ inputs:
   optic_token:
     description: The Optic Token. Note, GitHub Secrets must be explicitly passed to composite actions
     required: false
+  github_token:
+    description: the GITHUB_TOKEN environment varibale for your current workflow, used to post a GitHub comment. Note, GitHub Secrets must be explicitly passed to composite actions
+    required: false
   ruleset:
-    description: The ruleset to apply to OpenAPI changes.
+    deprecationMessage: This value is no longer used.
+    description: DEPRECATED - This value is no longer used.
     required: false
     default: default
 
@@ -22,7 +26,7 @@ runs:
       - name: Setup optic-ci
         run: |
           echo "::group::Setup"
-          npm install --global @useoptic/optic-ci
+          npm install
           echo "::endgroup::"
         shell: bash
       - name: Generate GitHub Context
@@ -30,14 +34,23 @@ runs:
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         shell: bash
+      - name: Optionally enable Optic Cloud Changelogs
+        run: |
+          if [[ -n ${OPTIC_TOKEN} ]]; then
+          echo "Optic Cloud Changelog token found: enabling upload"
+          echo "OPTIC_CI_FLAGS=--upload-results" >> $GITHUB_ENV
+          fi
+        shell: bash
+        env:
+          OPTIC_TOKEN: ${{ inputs.OPTIC_TOKEN }}
       - run: >-
-          optic-ci compare
+          npx optic-ci compare
           --from ${{ github.event.pull_request.base.sha }}:${{ inputs.file }}
           --to ${{ github.event.pull_request.head.sha }}:${{ inputs.file }}
-          --upload-results
+          ${OPTIC_CI_FLAGS}
         env:
           FORCE_COLOR: "2"
-          OPTIC_TOKEN: ${{ secrets.OPTIC_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPTIC_TOKEN: ${{ inputs.OPTIC_TOKEN }}
+          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
           OPTIC_ENV: staging
         shell: bash
